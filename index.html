@@ -4,14 +4,45 @@
 <head>
 <title>Bonfire</title>
 
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <link rel="stylesheet" href="assets/style/style.css">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
+<script src="https://www.gstatic.com/firebasejs/6.0.1/firebase-app.js"></script>
+=======
+
+
 </head>
 
 <body>
+
+
+    
+
+
+    <div class="container text-center myinput d-flex">
+        <div class="input-group flex-nowrap justify-content-center">
+            <form>
+                    <input type="text" id="content" class="form-control myform" placeholder="Geschichte schreiben">
+                    <select class="form-control myform" id="emotion">
+                            <option value="" disabled selected>Emotion wählen</option>
+                            <option>&#128514</option>
+                            <option>&#128525</option>
+                            <option>&#128522</option>
+                            <option>&#128546</option>
+                        </select>
+                    <button id="add" class="btn btn-primary">Hinzufügen</button>
+                    <button id="delete" class="btn btn-danger">Alles löschen</button>
+            </form>
+    </div>
+
+    <div class="container" id="stories">
+           
+    </div>
 
     <div class="container">
             <h1>Bonfire mit <span id="id">Test</span></h1>
@@ -23,8 +54,37 @@
                     Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reiciendis dolor labore fugit pariatur vel voluptatem hic, facere eum est laudantium exercitationem non repellat saepe aliquam beatae unde. Commodi, aut laudantium.
                 </div>
             </div>
+
     </div>
 
+    
+    
+        
+        
+        
+        
+
+   
+    <script src="https://www.gstatic.com/firebasejs/6.0.0/firebase-firestore.js"></script>
+        <script>
+
+            var firebaseConfig = {
+                apiKey: "AIzaSyDvGcufJ9aHyi-2S2VJZfEmYXubbveHCWA",
+                authDomain: "bonfire-74554.firebaseapp.com",
+                databaseURL: "https://bonfire-74554.firebaseio.com",
+                projectId: "bonfire-74554",
+                storageBucket: "bonfire-74554.appspot.com",
+                messagingSenderId: "871982998708",
+                appId: "1:871982998708:web:441e5991077f47ab"
+            };
+
+            firebase.initializeApp(firebaseConfig);
+
+            const db = firebase.firestore();
+
+        </script>
+
+        <script src="assets/script/app.js"></script>
 
 </body>
 <script src="assets/script/url.js"></script>

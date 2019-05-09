@@ -1,3 +1,41 @@
 h1{
     color: green;
 }
+
+.story{
+    width: 300px;
+    background-color: white;
+    padding: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+
+    border: 0px;
+    border-style: solid;
+    border-radius: 10px;
+
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    position: relative;
+
+    .emoji{
+        font-size: 40px;
+    }
+
+    .date{
+        font-size: 14px;
+    }
+
+    
+}
+
+.myform{
+    width: 400px;
+    margin: 20px;
+}
+
+.btn{
+    margin: 20px;
+    width: 140px;
+}
