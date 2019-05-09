@@ -13,3 +13,8 @@ function GetURLParameter(sParam)
   }
 var ID_qrcode = GetURLParameter('id');
 $('#id').text(ID_qrcode);
+
+function SetURLParameter(id){
+    var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?id=' + id;
+    window.history.pushState({path:newurl},'',newurl);
+}
