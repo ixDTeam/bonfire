@@ -1,29 +1,52 @@
-var ID_qrcode = 'object/' + $('#ID_qrcode').val() + '/story';
+var URL_qrcode = 'object/' + ID_qrcode + '/story';
 
 //creat element and render
 
 //getdata
 
-$('#ID_qrcode').on("change", function(){
-    ID_qrcode = 'object/' + $('#ID_qrcode').val() + '/story';
-    getData();
+realTimeRender()
+
+$('#URL_qrcode').on("change", function(){
+    URL_qrcode = 'object/' + $('#URL_qrcode').val() + '/story';
+    ID_qrcode = $('#URL_qrcode').val();
+    console.log("URL CHANGE");
+    realTimeRender();
 })
 
-function getData(){
-    $('#stories').html("");
-    db.collection(ID_qrcode).get().then((snapshot) => {
+// function getData(){
+//     $('#stories').html("");
+//     db.collection(URL_qrcode).get().then((snapshot) => {
+//         snapshot.docs.forEach(doc => {
+//             console.log(doc.data());
+//             renderStory(doc);
+//         })
+//         losch();
+//     })
+//     SetURLParameter(ID_qrcode);
+//     $('#URL_qrcode').val(ID_qrcode);
+    
+// }
+
+function realTimeRender(){
+    
+    db.collection(URL_qrcode)
+    .onSnapshot(function(snapshot) {
+        $('#stories').html("");
         snapshot.docs.forEach(doc => {
             console.log(doc.data());
             renderStory(doc);
         })
-        losch();
+        SetURLParameter(ID_qrcode);
+        $('#URL_qrcode').val(ID_qrcode);
     })
 }
 
 
 
 
-// db.collection(ID_qrcode).get().then((snapshot) => {
+
+
+// db.collection(URL_qrcode).get().then((snapshot) => {
 //     snapshot.docs.forEach(doc => {
 //         console.log(doc.data());
 //         renderStory(doc);
@@ -58,7 +81,7 @@ $('#add').on("click", function() {
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
     console.log('submit');
     
-    db.collection(ID_qrcode).add({
+    db.collection(URL_qrcode).add({
         content: $('#content').val(),
         emotion: $('#emotion').val(),
         created: firebase.firestore.Timestamp.fromDate(new Date())
@@ -70,9 +93,9 @@ $('#add').on("click", function() {
 function losch(){
     $('.delete').on("click", function(){
         console.log("delete");
-        db.collection(ID_qrcode).get().then((snapshot) => {
+        db.collection(URL_qrcode).get().then((snapshot) => {
                 var id = $(this).parent().attr("data-id");
-                db.collection(ID_qrcode).doc(id).delete();
+                db.collection(URL_qrcode).doc(id).delete();
             
         })
     })
@@ -89,10 +112,10 @@ $(document).ready( function(){
 $('#delete').click(function() {
     event.preventDefault();
     console.log("Delete");
-    db.collection(ID_qrcode).get().then((snapshot) => {
+    db.collection(URL_qrcode).get().then((snapshot) => {
         snapshot.docs.forEach(doc => {
             console.log(doc.id);
-            db.collection(ID_qrcode).doc(doc.id).delete();
+            db.collection(URL_qrcode).doc(doc.id).delete();
         })
     })
 });
@@ -104,12 +127,20 @@ $('#delete').click(function() {
 //         console.log("Current data: ", doc.data());
 //     });
 
-    db.collection(ID_qrcode).where("name", "==", "test")
-    .onSnapshot(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
-            console.log(doc.data());
-        });
-    });
+    // db.collection(URL_qrcode).where("name", "==", "test")
+    // .onSnapshot(function(querySnapshot) {
+    //     querySnapshot.forEach(function(doc) {
+    //         console.log(doc.data());
+    //     });
+    // });
+
+    // db.collection(URL_qrcode).get().then((snapshot) => {
+    //     snapshot.docs.forEach(doc => {
+    //         console.log(doc.data());
+    //         renderStory(doc);
+    //     })
+
+    
 
    
 //seconds to time
