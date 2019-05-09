@@ -26,6 +26,13 @@ h1 {
   font-size: 14px;
 }
 
+.story .delete {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+
 .myform {
   width: 400px;
   margin: 20px;

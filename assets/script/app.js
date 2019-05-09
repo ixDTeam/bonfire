@@ -1,8 +1,14 @@
 var URL_qrcode = 'object/' + ID_qrcode + '/story';
+var long;
+var lat;
+
+var latitude = {latitude:"50", longitude:"0"};
 
 //creat element and render
 
 //getdata
+
+getLocation();
 
 realTimeRender()
 
@@ -85,7 +91,8 @@ $('#add').on("click", function() {
     db.collection(URL_qrcode).add({
         content: $('#content').val(),
         emotion: $('#emotion').val(),
-        created: firebase.firestore.Timestamp.fromDate(new Date())
+        created: firebase.firestore.Timestamp.fromDate(new Date()),
+        location: new firebase.firestore.GeoPoint( lat, long)
         });
 });
 
@@ -141,7 +148,22 @@ $('#delete').click(function() {
     //         renderStory(doc);
     //     })
 
-    
+//Get Geopoint
+
+function getLocation(){
+    navigator.geolocation.getCurrentPosition(success, error);
+    console.log("ortung läuft");
+}
+
+function success(position) {
+    lat = position.coords.latitude;
+    long = position.coords.longitude;
+    console.log(lat + " " + long);
+  };
+
+  function error() {
+    alert("Achtung");
+  };
 
    
 //seconds to time
