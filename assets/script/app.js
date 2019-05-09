@@ -36,6 +36,7 @@ function realTimeRender(){
             console.log(doc.data());
             renderStory(doc);
         })
+        losch();
         SetURLParameter(ID_qrcode);
         $('#URL_qrcode').val(ID_qrcode);
     })
