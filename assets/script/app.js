@@ -1,25 +1,36 @@
-const cityList = document.querySelector('#city');
+var ID_qrcode = 'object/' + $('#ID_qrcode').val() + '/story';
 
 //creat element and render
 
-function renderCities(doc){
-    let city = document.createElement('h1')
+//getdata
 
-    city.textContent = doc.data().name;
+$('#ID_qrcode').on("change", function(){
+    ID_qrcode = 'object/' + $('#ID_qrcode').val() + '/story';
+    getData();
+})
 
-    cityList.appendChild(city);
+function getData(){
+    $('#stories').html("");
+    db.collection(ID_qrcode).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+            console.log(doc.data());
+            renderStory(doc);
+        })
+        losch();
+    })
 }
 
-// function renderStory(doc){
-//     $("#city").append("<p>"+doc.data().content+"<p>");
-// }
 
-db.collection('object/001/story').get().then((snapshot) => {
-    snapshot.docs.forEach(doc => {
-        console.log(doc.data());
-        renderStory(doc);
-    })
-})
+
+
+// db.collection(ID_qrcode).get().then((snapshot) => {
+//     snapshot.docs.forEach(doc => {
+//         console.log(doc.data());
+//         renderStory(doc);
+
+//     })
+//     losch();
+// })
 
 //render data
 
@@ -31,10 +42,10 @@ function renderStory(doc){
 
     
 
-    var path = "<div class='story' data-id=" + id + "><span class='date'>" + time + "</span><p class='content'>" + content + "</p> " +  "<span class='emoji'>" + emoji + "</span></div>";
+    var path = "<div class='story' data-id=" + id + "><span class='date'>" + time + "</span><p class='content'>" + content + "</p> " +  "<span class='emoji'>" + emoji + "</span><div class='delete'>X</div></div>";
     $('#stories').append(path);
     console.log(doc.data().created.seconds);
-}
+};
 
 
 
@@ -47,26 +58,60 @@ $('#add').on("click", function() {
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
     console.log('submit');
     
-    db.collection('object/001/story').add({
+    db.collection(ID_qrcode).add({
         content: $('#content').val(),
         emotion: $('#emotion').val(),
         created: firebase.firestore.Timestamp.fromDate(new Date())
         });
-})
+});
+
+//delete one
+
+function losch(){
+    $('.delete').on("click", function(){
+        console.log("delete");
+        db.collection(ID_qrcode).get().then((snapshot) => {
+                var id = $(this).parent().attr("data-id");
+                db.collection(ID_qrcode).doc(id).delete();
+            
+        })
+    })
+};
+
+$(document).ready( function(){
+    console.log("ready");
 
 
-//deleting all
+});
 
-$('.story').on("click", function(){
+
+//deleting data
+$('#delete').click(function() {
     event.preventDefault();
+    console.log("Delete");
+    db.collection(ID_qrcode).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+            console.log(doc.id);
+            db.collection(ID_qrcode).doc(doc.id).delete();
+        })
+    })
+});
 
 
-    db.collection('object/001/story').doc(this.data('data-id')).delete();
-    console.log('delete');
-})
+//realtime data
+// db.collection("object/001/story").doc('6p1H9ZsUGUy7EkSQc2gg')
+//     .onSnapshot(function(doc) {
+//         console.log("Current data: ", doc.data());
+//     });
 
+    db.collection(ID_qrcode).where("name", "==", "test")
+    .onSnapshot(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            console.log(doc.data());
+        });
+    });
 
-
+   
 //seconds to time
 function convert(unixseconds){
 
@@ -101,3 +146,6 @@ function convert(unixseconds){
     return convdataTime;
     
    }
+
+
+  
