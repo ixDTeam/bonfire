@@ -43,6 +43,7 @@ function realTimeRender(){
             renderStory(doc);
         })
         losch();
+        mapUpdate();
         SetURLParameter(ID_qrcode);
         $('#URL_qrcode').val(ID_qrcode);
     })
@@ -69,12 +70,14 @@ function renderStory(doc){
     var time = convert(doc.data().created.seconds);
     var emoji = doc.data().emotion;
     var id = doc.id;
+    var lati = doc.data().location._lat;
+    var longi = doc.data().location._long;
 
     
 
-    var path = "<div class='story' data-id=" + id + "><span class='date'>" + time + "</span><p class='content'>" + content + "</p> " +  "<span class='emoji'>" + emoji + "</span><div class='delete'>X</div></div>";
+    var path = "<div class='story' data-id=" + id + "><span class='date'>" + time + "</span><p class='content'>" + content + "</p> " +  "<span class='emoji'>" + emoji + "</span><span>" + lati + " " + longi + "</span><div class='delete'>X</div></div>";
     $('#stories').append(path);
-    console.log(doc.data().created.seconds);
+    console.log(doc.data().location._lat);
 };
 
 
@@ -164,6 +167,23 @@ function success(position) {
   function error() {
     alert("Achtung");
   };
+
+  function mapUpdate(){
+    $('.story').on("click", function(){
+        db.collection(URL_qrcode).get().then((snapshot) => {
+                var id = $(this).attr("data-id");
+                var docRef = db.collection(URL_qrcode).doc(id);
+                docRef.get().then(function(doc) {
+                    console.log("Cached document data:", doc.data().location._lat);
+                    var latlng = {lat: doc.data().location._lat, lng: doc.data().location._long}
+                    map.panTo(latlng);
+
+
+            
+        })
+    })
+  })
+};
 
    
 //seconds to time
