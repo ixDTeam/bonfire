@@ -1,25 +1,60 @@
-const cityList = document.querySelector('#city');
+var URL_qrcode = 'object/' + ID_qrcode + '/story';
 
 //creat element and render
 
-function renderCities(doc){
-    let city = document.createElement('h1')
+//getdata
 
-    city.textContent = doc.data().name;
+realTimeRender()
 
-    cityList.appendChild(city);
-}
+$('#URL_qrcode').on("change", function(){
+    URL_qrcode = 'object/' + $('#URL_qrcode').val() + '/story';
+    ID_qrcode = $('#URL_qrcode').val();
+    console.log("URL CHANGE");
+    realTimeRender();
+})
 
-// function renderStory(doc){
-//     $("#city").append("<p>"+doc.data().content+"<p>");
+// function getData(){
+//     $('#stories').html("");
+//     db.collection(URL_qrcode).get().then((snapshot) => {
+//         snapshot.docs.forEach(doc => {
+//             console.log(doc.data());
+//             renderStory(doc);
+//         })
+//         losch();
+//     })
+//     SetURLParameter(ID_qrcode);
+//     $('#URL_qrcode').val(ID_qrcode);
+    
 // }
 
-db.collection('object/001/story').get().then((snapshot) => {
-    snapshot.docs.forEach(doc => {
-        console.log(doc.data());
-        renderStory(doc);
+function realTimeRender(){
+    
+    db.collection(URL_qrcode)
+    .onSnapshot(function(snapshot) {
+        $('#stories').html("");
+        snapshot.docs.forEach(doc => {
+            console.log(doc.data());
+            renderStory(doc);
+        })
+        losch();
+        SetURLParameter(ID_qrcode);
+        $('#URL_qrcode').val(ID_qrcode);
     })
-})
+}
+
+
+
+
+
+
+// db.collection(URL_qrcode).get().then((snapshot) => {
+//     snapshot.docs.forEach(doc => {
+//         console.log(doc.data());
+//         renderStory(doc);
+
+//     })
+//     losch();
+// })
 
 //render data
 
@@ -31,10 +66,10 @@ function renderStory(doc){
 
     
 
-    var path = "<div class='story' data-id=" + id + "><span class='date'>" + time + "</span><p class='content'>" + content + "</p> " +  "<span class='emoji'>" + emoji + "</span></div>";
+    var path = "<div class='story' data-id=" + id + "><span class='date'>" + time + "</span><p class='content'>" + content + "</p> " +  "<span class='emoji'>" + emoji + "</span><div class='delete'>X</div></div>";
     $('#stories').append(path);
     console.log(doc.data().created.seconds);
-}
+};
 
 
 
@@ -47,26 +82,68 @@ $('#add').on("click", function() {
     var time = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
     console.log('submit');
     
-    db.collection('object/001/story').add({
+    db.collection(URL_qrcode).add({
         content: $('#content').val(),
         emotion: $('#emotion').val(),
         created: firebase.firestore.Timestamp.fromDate(new Date())
         });
-})
+});
+
+//delete one
+
+function losch(){
+    $('.delete').on("click", function(){
+        console.log("delete");
+        db.collection(URL_qrcode).get().then((snapshot) => {
+                var id = $(this).parent().attr("data-id");
+                db.collection(URL_qrcode).doc(id).delete();
+            
+        })
+    })
+};
+
+$(document).ready( function(){
+    console.log("ready");
 
 
-//deleting all
+});
 
-$('.story').on("click", function(){
+
+//deleting data
+$('#delete').click(function() {
     event.preventDefault();
+    console.log("Delete");
+    db.collection(URL_qrcode).get().then((snapshot) => {
+        snapshot.docs.forEach(doc => {
+            console.log(doc.id);
+            db.collection(URL_qrcode).doc(doc.id).delete();
+        })
+    })
+});
 
 
-    db.collection('object/001/story').doc(this.data('data-id')).delete();
-    console.log('delete');
-})
+//realtime data
+// db.collection("object/001/story").doc('6p1H9ZsUGUy7EkSQc2gg')
+//     .onSnapshot(function(doc) {
+//         console.log("Current data: ", doc.data());
+//     });
 
+    // db.collection(URL_qrcode).where("name", "==", "test")
+    // .onSnapshot(function(querySnapshot) {
+    //     querySnapshot.forEach(function(doc) {
+    //         console.log(doc.data());
+    //     });
+    // });
 
+    // db.collection(URL_qrcode).get().then((snapshot) => {
+    //     snapshot.docs.forEach(doc => {
+    //         console.log(doc.data());
+    //         renderStory(doc);
+    //     })
 
+    
+
+   
 //seconds to time
 function convert(unixseconds){
 
@@ -101,3 +178,6 @@ function convert(unixseconds){
     return convdataTime;
     
    }
+
+
+  
