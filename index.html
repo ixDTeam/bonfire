@@ -36,16 +36,18 @@
                         </select>
                     <select class="form-control myform" id="emotion">
                             <option value="" disabled selected>Emotion wählen</option>
-                            <option>&#128514</option>
-                            <option>&#128525</option>
-                            <option>&#128522</option>
-                            <option>&#128546</option>
+                            <option>128514</option>
+                            <option>128525</option>
+                            <option>128522</option>
+                            <option>128546</option>
                         </select>
                     <button id="add" class="btn btn-primary">Hinzufügen</button>
                     <button id="delete" class="btn btn-danger">Alles löschen</button>
             </form>
 
         </div>
+        <div id="like_button_container"></div>
+        <div id="root"></div>
         <div id="stories" class="justify-content-center">
       </div>
 
@@ -81,13 +83,20 @@
 
             const db = firebase.firestore();
 
-        </script> 
-       
+        </script>
+
               <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCnvv9mmEukIfLHcf9ZCbyr00RSkuQZJpg&callback=initMap"
               async defer></script>
         <script src="assets/script/map.js"></script>
         <script src="assets/script/url.js"></script>
         <script src="assets/script/app.js"></script>
+
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+<!-- Load our React component. -->
+<script type="text/babel" src="assets/script/button.js"></script>
 
 </body>
 </html>
